@@ -1,0 +1,1 @@
+windows.ui.core.animationmetrics.1.h

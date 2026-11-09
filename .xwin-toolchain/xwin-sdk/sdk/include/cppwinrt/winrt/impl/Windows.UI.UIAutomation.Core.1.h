@@ -1,0 +1,1 @@
+windows.ui.uiautomation.core.1.h

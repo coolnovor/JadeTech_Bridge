@@ -1,0 +1,1 @@
+Windows.ApplicationModel.resources.management.h

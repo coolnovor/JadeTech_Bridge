@@ -1,0 +1,1 @@
+windows.system.diagnostics.telemetry.0.h

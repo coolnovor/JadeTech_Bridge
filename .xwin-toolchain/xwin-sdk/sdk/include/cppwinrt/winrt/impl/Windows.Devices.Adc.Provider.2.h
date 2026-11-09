@@ -1,0 +1,1 @@
+windows.devices.adc.provider.2.h

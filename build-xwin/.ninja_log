@@ -1,0 +1,12 @@
+# ninja log v7
+2	683	1794205715593817614	CMakeFiles/JadeTech_Bridge.dir/src/dllmain.cpp.obj	20bc1fce46dc3088
+3	3591	1794205715594817619	CMakeFiles/JadeTech_Bridge.dir/src/Hook.cpp.obj	847dfede25e81a5a
+2	2012	1794205715594675769	CMakeFiles/JadeTech_Bridge.dir/src/ChatManager.cpp.obj	1318038bc2cfaaef
+3591	3719	1794205719304838442	JadeTech_Bridge.dll	38553f1b9a1c92d1
+3591	3719	1794205719304838442	JadeTech_Bridge.lib	38553f1b9a1c92d1
+1	1481	1794199083871411736	CMakeFiles/JadeTech_Bridge.dir/src/test.cpp.obj	bc6593cfa51140cd
+2	1911	1794206670373175695	CMakeFiles/JadeTech_Bridge.dir/src/ChatManager.cpp.obj	1318038bc2cfaaef
+3	2059	1794206670375304034	CMakeFiles/JadeTech_Bridge.dir/src/JadeLogger.cpp.obj	a94ed909b2dd3832
+2	3247	1794206670374874836	CMakeFiles/JadeTech_Bridge.dir/src/Hook.cpp.obj	847dfede25e81a5a
+3247	3326	1794206673691194316	JadeTech_Bridge.dll	9fbb8028a99c8cc4
+3247	3326	1794206673691194316	JadeTech_Bridge.lib	9fbb8028a99c8cc4

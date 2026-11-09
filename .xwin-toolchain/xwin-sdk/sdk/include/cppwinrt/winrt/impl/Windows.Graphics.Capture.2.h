@@ -1,0 +1,1 @@
+windows.graphics.capture.2.h

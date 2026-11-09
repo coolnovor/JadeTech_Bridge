@@ -1,0 +1,1 @@
+windows.storage.2.h

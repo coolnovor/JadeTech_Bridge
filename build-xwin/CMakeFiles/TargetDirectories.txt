@@ -1,0 +1,3 @@
+/home/coolnovo/JadeTech_Bridge/build-xwin/CMakeFiles/JadeTech_Bridge.dir
+/home/coolnovo/JadeTech_Bridge/build-xwin/CMakeFiles/edit_cache.dir
+/home/coolnovo/JadeTech_Bridge/build-xwin/CMakeFiles/rebuild_cache.dir

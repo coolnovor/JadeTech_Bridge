@@ -1,0 +1,1 @@
+windows.applicationmodel.datatransfer.sharetarget.2.h

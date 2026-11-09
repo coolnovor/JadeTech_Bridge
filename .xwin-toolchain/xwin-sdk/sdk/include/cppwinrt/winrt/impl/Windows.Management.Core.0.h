@@ -1,0 +1,1 @@
+windows.management.core.0.h

@@ -1,0 +1,1 @@
+windows.applicationmodel.datatransfer.dragdrop.core.1.h

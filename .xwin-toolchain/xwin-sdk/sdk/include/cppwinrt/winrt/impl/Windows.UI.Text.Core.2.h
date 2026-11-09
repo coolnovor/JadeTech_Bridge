@@ -1,0 +1,1 @@
+windows.ui.text.core.2.h

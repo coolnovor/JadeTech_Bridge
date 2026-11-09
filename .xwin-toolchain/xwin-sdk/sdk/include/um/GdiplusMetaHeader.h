@@ -1,0 +1,1 @@
+gdiplusmetaheader.h

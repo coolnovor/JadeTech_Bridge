@@ -1,0 +1,1 @@
+windows.ui.xaml.automation.text.0.h

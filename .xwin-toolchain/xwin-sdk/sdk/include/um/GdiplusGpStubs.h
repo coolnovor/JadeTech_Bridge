@@ -1,0 +1,1 @@
+gdiplusgpstubs.h

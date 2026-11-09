@@ -1,0 +1,1 @@
+gdiplusfontcollection.h

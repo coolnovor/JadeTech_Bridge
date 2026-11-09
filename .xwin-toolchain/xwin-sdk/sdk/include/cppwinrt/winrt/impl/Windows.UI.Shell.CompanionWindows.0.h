@@ -1,0 +1,1 @@
+windows.ui.shell.companionwindows.0.h

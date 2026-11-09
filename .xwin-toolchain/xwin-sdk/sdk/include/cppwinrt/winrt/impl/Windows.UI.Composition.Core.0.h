@@ -1,0 +1,1 @@
+windows.ui.composition.core.0.h

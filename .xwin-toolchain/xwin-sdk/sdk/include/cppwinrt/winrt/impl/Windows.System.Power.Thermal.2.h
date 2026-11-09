@@ -1,0 +1,1 @@
+windows.system.power.thermal.2.h

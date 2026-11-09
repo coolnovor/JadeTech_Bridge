@@ -1,0 +1,1 @@
+windows.security.isolation.0.h

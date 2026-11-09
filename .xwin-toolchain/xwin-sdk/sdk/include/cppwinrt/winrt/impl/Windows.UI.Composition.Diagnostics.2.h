@@ -1,0 +1,1 @@
+windows.ui.composition.diagnostics.2.h

@@ -1,0 +1,1 @@
+windows.applicationmodel.socialinfo.provider.2.h

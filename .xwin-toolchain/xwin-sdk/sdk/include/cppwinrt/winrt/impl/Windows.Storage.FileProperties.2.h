@@ -1,0 +1,1 @@
+windows.storage.fileproperties.2.h

@@ -1,0 +1,1 @@
+windows.globalization.h

@@ -1,0 +1,1 @@
+windows.storage.compression.1.h

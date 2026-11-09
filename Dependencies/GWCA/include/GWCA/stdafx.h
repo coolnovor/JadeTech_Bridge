@@ -1,0 +1,92 @@
+#pragma once
+
+// MSVC-only: every other compiler reports the whole block as unknown-pragma noise.
+#ifdef _MSC_VER
+#pragma warning(disable: 4619) // there is no warning number 'number'
+
+#pragma warning(push)
+#pragma warning(disable: 4061) // enumerator 'identifier' in switch of enum 'enumeration' is not explicitly handled by a case label
+#pragma warning(disable: 4365) // 'action' : conversion from 'type_1' to 'type_2', signed/unsigned mismatch
+#pragma warning(disable: 4514) // 'function' : unreferenced inline function has been removed
+#pragma warning(disable: 4530) // C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+#pragma warning(disable: 4577) // 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+#pragma warning(disable: 4623) // 'derived class' : default constructor was implicitly defined as deleted because a base class default constructor is inaccessible or deleted
+#pragma warning(disable: 4625) // 'derived class' : copy constructor was implicitly defined as deleted because a base class copy constructor is inaccessible or deleted
+#pragma warning(disable: 4626) // 'derived class' : assignment operator was implicitly defined as deleted because a base class assignment operator is inaccessible or deleted
+#pragma warning(disable: 4668) // 'symbol' is not defined as a preprocessor macro, replacing with '0' for 'directives'
+#pragma warning(disable: 4710) // 'function' : function not inlined
+#pragma warning(disable: 4711) // function 'function' selected for inline expansion
+#pragma warning(disable: 4820) // 'bytes' bytes padding added after construct 'member_name'
+#pragma warning(disable: 4917) // 'declarator' : a GUID can only be associated with a class, interface or namespace
+#pragma warning(disable: 5026) // 'type': move constructor was implicitly defined as deleted
+#pragma warning(disable: 5027) // 'type': move assignment operator was implicitly defined as deleted
+#pragma warning(disable: 5039) // 'function': pointer or reference to potentially throwing function passed to extern C function under -EHc. Undefined behavior may occur if this function throws an exception.
+#pragma warning(disable: 5045) // Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
+#endif
+
+#ifndef _CRT_SECURE_NO_WARNINGS
+# define _CRT_SECURE_NO_WARNINGS 1
+#endif
+
+#include <cmath>
+#include <cstdio>
+#include <cstdint>
+#include <cstring>
+
+#include <map>
+#include <algorithm>
+#include <array>
+#include <atomic>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <functional>
+#include <unordered_map>
+#include <utility>
+
+#ifndef NOMINMAX
+# define NOMINMAX
+#endif
+
+#ifndef WIN32_LEAN_AND_MEAN
+# define WIN32_LEAN_AND_MEAN
+#endif
+
+// GWCA_WASM comes from the build, not a header, so an undefined macro takes the Win32 branch -- what a consumer wants.
+#if GWCA_WASM
+// No Win32 here: the shim keeps the few Windows typedefs in GWCA's public headers parsing, and does not ship.
+#include <Platform/Wasm/Win32Shim.h>
+#else
+#include <Windows.h>
+#include <ShellApi.h>
+#endif
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
+#ifndef _MSC_VER
+// GCC/MinGW diagnostic-build compatibility shim (not needed on MSVC).
+#define _ReturnAddress() __builtin_return_address(0)
+#endif
+
+
+#ifdef _MSC_VER
+#pragma warning(disable: 4061) // enumerator 'identifier' in switch of enum 'enumeration' is not explicitly handled by a case label
+#pragma warning(disable: 4201) // nonstandard extension used : nameless struct/union
+#pragma warning(disable: 4514) // 'function' : unreferenced inline function has been removed
+#pragma warning(disable: 4505) // 'function' : unreferenced local function has been removed
+#pragma warning(disable: 4530) // C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+#pragma warning(disable: 4577) // 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+#pragma warning(disable: 4623) // 'derived class' : default constructor was implicitly defined as deleted because a base class default constructor is inaccessible or deleted
+#pragma warning(disable: 4625) // 'derived class' : copy constructor was implicitly defined as deleted because a base class copy constructor is inaccessible or deleted
+#pragma warning(disable: 4626) // 'derived class' : assignment operator was implicitly defined as deleted because a base class assignment operator is inaccessible or deleted
+#pragma warning(disable: 4710) // 'function' : function not inlined
+#pragma warning(disable: 4711) // function 'function' selected for inline expansion
+#pragma warning(disable: 4774) // 'swprintf' : format string expected in argument 3 is not a string literal
+#pragma warning(disable: 4820) // 'bytes' bytes padding added after construct 'member_name'
+#pragma warning(disable: 5026) // 'type': move constructor was implicitly defined as deleted
+#pragma warning(disable: 5027) // 'type': move assignment operator was implicitly defined as deleted
+#pragma warning(disable: 5045) // Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
+#pragma warning(disable: 28159) // Consider using 'GetTickCount64' instead of 'GetTickCount'.
+#endif

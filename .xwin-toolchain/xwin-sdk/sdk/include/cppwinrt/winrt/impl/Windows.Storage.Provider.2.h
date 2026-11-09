@@ -1,0 +1,1 @@
+windows.storage.provider.2.h

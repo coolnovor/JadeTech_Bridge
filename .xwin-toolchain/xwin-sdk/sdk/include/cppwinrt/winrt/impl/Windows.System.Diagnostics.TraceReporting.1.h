@@ -1,0 +1,1 @@
+windows.system.diagnostics.tracereporting.1.h

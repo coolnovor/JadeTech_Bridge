@@ -1,0 +1,1 @@
+windows.applicationmodel.extendedexecution.foreground.0.h

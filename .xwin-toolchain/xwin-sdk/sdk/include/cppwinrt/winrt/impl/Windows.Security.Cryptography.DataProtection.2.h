@@ -1,0 +1,1 @@
+windows.security.cryptography.dataprotection.2.h

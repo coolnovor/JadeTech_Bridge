@@ -1,0 +1,1 @@
+windows.devices.spi.provider.1.h

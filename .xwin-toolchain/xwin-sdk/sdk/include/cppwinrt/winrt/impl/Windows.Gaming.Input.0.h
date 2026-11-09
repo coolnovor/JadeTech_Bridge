@@ -1,0 +1,1 @@
+windows.gaming.input.0.h

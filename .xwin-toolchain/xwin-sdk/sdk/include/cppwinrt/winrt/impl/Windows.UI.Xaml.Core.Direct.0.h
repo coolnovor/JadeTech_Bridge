@@ -1,0 +1,1 @@
+windows.ui.xaml.core.direct.0.h

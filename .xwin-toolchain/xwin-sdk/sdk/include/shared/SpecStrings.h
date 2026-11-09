@@ -1,0 +1,1 @@
+specstrings.h

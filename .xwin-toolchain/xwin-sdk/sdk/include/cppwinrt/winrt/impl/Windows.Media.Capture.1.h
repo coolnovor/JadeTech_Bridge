@@ -1,0 +1,1 @@
+windows.media.capture.1.h

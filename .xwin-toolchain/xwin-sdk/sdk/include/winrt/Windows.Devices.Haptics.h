@@ -1,0 +1,1 @@
+windows.devices.haptics.h

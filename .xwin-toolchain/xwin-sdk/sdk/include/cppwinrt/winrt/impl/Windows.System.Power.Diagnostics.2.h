@@ -1,0 +1,1 @@
+windows.system.power.diagnostics.2.h

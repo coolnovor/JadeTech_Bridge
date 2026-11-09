@@ -1,0 +1,1 @@
+SpatialAudioMetadata.h

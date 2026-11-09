@@ -1,0 +1,1 @@
+windows.devices.sensors.custom.0.h

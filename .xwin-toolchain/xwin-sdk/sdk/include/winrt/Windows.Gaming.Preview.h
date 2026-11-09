@@ -1,0 +1,1 @@
+windows.gaming.preview.h

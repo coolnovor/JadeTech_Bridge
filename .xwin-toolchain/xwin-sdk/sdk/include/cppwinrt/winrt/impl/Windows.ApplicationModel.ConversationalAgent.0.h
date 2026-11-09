@@ -1,0 +1,1 @@
+windows.applicationmodel.conversationalagent.0.h

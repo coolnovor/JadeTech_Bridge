@@ -1,0 +1,1 @@
+windows.applicationmodel.store.licensemanagement.2.h
