@@ -36,4 +36,10 @@ target_link_libraries(JadeTech_Bridge PRIVATE
     user32
     kernel32
     psapi
+    delayimp  # <--- 延迟加载 gwca.dll
+)
+
+# 链接器延迟加载
+target_link_options(JadeTech_Bridge PRIVATE 
+    /DELAYLOAD:gwca.dll
 )

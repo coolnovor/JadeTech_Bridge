@@ -104,8 +104,8 @@ build CMakeFiles/JadeTech_Bridge.dir/src/JadeLogger.cpp.obj: CXX_COMPILER__JadeT
 build JadeTech_Bridge.dll JadeTech_Bridge.lib: CXX_SHARED_LIBRARY_LINKER__JadeTech_Bridge_Release CMakeFiles/JadeTech_Bridge.dir/src/dllmain.cpp.obj CMakeFiles/JadeTech_Bridge.dir/src/ChatManager.cpp.obj CMakeFiles/JadeTech_Bridge.dir/src/Hook.cpp.obj CMakeFiles/JadeTech_Bridge.dir/src/JadeLogger.cpp.obj
   CONFIG = Release
   LANGUAGE_COMPILE_FLAGS = --target=i686-pc-windows-msvc /imsvc /home/coolnovo/JadeTech_Bridge/.xwin-toolchain/xwin-sdk/crt/include      /imsvc /home/coolnovo/JadeTech_Bridge/.xwin-toolchain/xwin-sdk/sdk/include/ucrt      /imsvc /home/coolnovo/JadeTech_Bridge/.xwin-toolchain/xwin-sdk/sdk/include/um      /imsvc /home/coolnovo/JadeTech_Bridge/.xwin-toolchain/xwin-sdk/sdk/include/shared /DWIN32 /D_WINDOWS /EHsc /MT /O2 /Oi /Gy /DNDEBUG /Z7 -MT
-  LINK_FLAGS = /libpath:/home/coolnovo/JadeTech_Bridge/.xwin-toolchain/xwin-sdk/crt/lib/x86      /libpath:/home/coolnovo/JadeTech_Bridge/.xwin-toolchain/xwin-sdk/sdk/lib/ucrt/x86      /libpath:/home/coolnovo/JadeTech_Bridge/.xwin-toolchain/xwin-sdk/sdk/lib/um/x86 /machine:X86 /INCREMENTAL:NO
-  LINK_LIBRARIES = gwca.lib  user32.lib  kernel32.lib  psapi.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
+  LINK_FLAGS = /libpath:/home/coolnovo/JadeTech_Bridge/.xwin-toolchain/xwin-sdk/crt/lib/x86      /libpath:/home/coolnovo/JadeTech_Bridge/.xwin-toolchain/xwin-sdk/sdk/lib/ucrt/x86      /libpath:/home/coolnovo/JadeTech_Bridge/.xwin-toolchain/xwin-sdk/sdk/lib/um/x86 /machine:X86 /INCREMENTAL:NO /DELAYLOAD:gwca.dll
+  LINK_LIBRARIES = gwca.lib  user32.lib  kernel32.lib  psapi.lib  delayimp.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
   LINK_PATH = -LIBPATH:/home/coolnovo/JadeTech_Bridge/Dependencies/GWCA/lib
   OBJECT_DIR = CMakeFiles/JadeTech_Bridge.dir
   POST_BUILD = :
