@@ -1,1 +1,0 @@
-windows.system.power.thermal.1.h

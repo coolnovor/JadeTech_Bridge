@@ -1,1 +1,0 @@
-windows.networking.networkoperators.2.h

@@ -1,1 +1,0 @@
-windows.applicationmodel.store.0.h

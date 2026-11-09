@@ -1,1 +1,0 @@
-windows.foundation.metadata.2.h

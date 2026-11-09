@@ -1,1 +1,0 @@
-Windows.Graphics.Capture.Interop.h

@@ -1,1 +1,0 @@
-windows.media.closedcaptioning.2.h

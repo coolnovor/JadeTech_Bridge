@@ -1,1 +1,0 @@
-windows.applicationmodel.socialinfo.2.h

@@ -1,1 +1,0 @@
-windows.applicationmodel.appointments.appointmentsprovider.h

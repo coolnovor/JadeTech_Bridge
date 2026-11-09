@@ -1,1 +1,0 @@
-windows.devices.bluetooth.rfcomm.0.h

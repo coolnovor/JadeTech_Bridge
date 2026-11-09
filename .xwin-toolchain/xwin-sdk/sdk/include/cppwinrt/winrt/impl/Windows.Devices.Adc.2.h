@@ -1,1 +1,0 @@
-windows.devices.adc.2.h

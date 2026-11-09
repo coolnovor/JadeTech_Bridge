@@ -1,1 +1,0 @@
-windows.foundation.2.h

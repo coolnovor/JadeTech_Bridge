@@ -1,1 +1,0 @@
-Windows.ApplicationModel.store.preview.installcontrol.h

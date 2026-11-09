@@ -1,1 +1,0 @@
-windows.foundation.diagnostics.2.h

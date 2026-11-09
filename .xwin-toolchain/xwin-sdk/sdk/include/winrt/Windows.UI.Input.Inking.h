@@ -1,1 +1,0 @@
-windows.ui.input.inking.h

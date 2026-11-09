@@ -1,1 +1,0 @@
-windows.system.diagnostics.deviceportal.2.h

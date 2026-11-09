@@ -1,1 +1,0 @@
-DiagnosticDataQuery.h

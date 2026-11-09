@@ -1,1 +1,0 @@
-windows.networking.sockets.0.h

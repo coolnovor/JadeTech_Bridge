@@ -1,1 +1,0 @@
-windows.devices.pointofservice.0.h

@@ -1,1 +1,0 @@
-AdsHlp.h

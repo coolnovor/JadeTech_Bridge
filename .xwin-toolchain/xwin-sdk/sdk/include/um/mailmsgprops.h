@@ -1,1 +1,0 @@
-MailMsgProps.h

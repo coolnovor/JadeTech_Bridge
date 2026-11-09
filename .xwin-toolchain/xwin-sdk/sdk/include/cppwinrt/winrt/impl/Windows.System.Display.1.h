@@ -1,1 +1,0 @@
-windows.system.display.1.h

@@ -1,1 +1,0 @@
-gdipluseffects.h

@@ -1,1 +1,0 @@
-windows.gaming.ui.2.h

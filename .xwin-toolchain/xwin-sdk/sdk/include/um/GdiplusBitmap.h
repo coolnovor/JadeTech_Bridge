@@ -1,1 +1,0 @@
-gdiplusbitmap.h

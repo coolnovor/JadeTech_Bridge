@@ -1,1 +1,0 @@
-gdiplusinit.h

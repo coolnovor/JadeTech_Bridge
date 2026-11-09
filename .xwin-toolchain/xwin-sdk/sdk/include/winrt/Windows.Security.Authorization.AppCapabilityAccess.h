@@ -1,1 +1,0 @@
-windows.security.authorization.appcapabilityaccess.h

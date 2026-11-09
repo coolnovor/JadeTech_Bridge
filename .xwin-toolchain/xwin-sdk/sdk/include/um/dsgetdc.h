@@ -1,1 +1,0 @@
-DsGetDC.h

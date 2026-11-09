@@ -1,1 +1,0 @@
-DirectXMathMisc.inl

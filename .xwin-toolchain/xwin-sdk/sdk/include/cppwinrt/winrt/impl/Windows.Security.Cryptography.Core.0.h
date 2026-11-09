@@ -1,1 +1,0 @@
-windows.security.cryptography.core.0.h

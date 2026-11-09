@@ -1,1 +1,0 @@
-IContactProperties.h

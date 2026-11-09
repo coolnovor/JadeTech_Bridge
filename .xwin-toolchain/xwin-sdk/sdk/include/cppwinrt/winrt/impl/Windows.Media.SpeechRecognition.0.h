@@ -1,1 +1,0 @@
-windows.media.speechrecognition.0.h

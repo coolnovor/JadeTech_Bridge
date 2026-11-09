@@ -1,1 +1,0 @@
-windows.globalization.numberformatting.2.h

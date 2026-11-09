@@ -1,1 +1,0 @@
-windows.graphics.imaging.2.h

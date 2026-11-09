@@ -1,1 +1,0 @@
-windows.applicationmodel.payments.provider.2.h

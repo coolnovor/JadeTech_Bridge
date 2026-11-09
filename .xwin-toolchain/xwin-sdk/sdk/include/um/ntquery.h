@@ -1,1 +1,0 @@
-NTQuery.h

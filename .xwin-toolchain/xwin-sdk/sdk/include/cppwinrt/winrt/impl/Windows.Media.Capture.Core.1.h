@@ -1,1 +1,0 @@
-windows.media.capture.core.1.h

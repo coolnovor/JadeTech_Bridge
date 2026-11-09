@@ -1,1 +1,0 @@
-windows.graphics.directx.2.h

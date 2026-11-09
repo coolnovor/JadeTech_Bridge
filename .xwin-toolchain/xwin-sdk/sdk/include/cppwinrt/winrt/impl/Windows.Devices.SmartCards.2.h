@@ -1,1 +1,0 @@
-windows.devices.smartcards.2.h

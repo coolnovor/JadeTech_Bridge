@@ -1,1 +1,0 @@
-gdiplusstringformat.h

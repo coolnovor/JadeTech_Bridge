@@ -1,1 +1,0 @@
-windows.devices.bluetooth.genericattributeprofile.2.h

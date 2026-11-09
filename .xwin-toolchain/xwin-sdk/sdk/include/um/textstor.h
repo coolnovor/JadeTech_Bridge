@@ -1,1 +1,0 @@
-TextStor.h

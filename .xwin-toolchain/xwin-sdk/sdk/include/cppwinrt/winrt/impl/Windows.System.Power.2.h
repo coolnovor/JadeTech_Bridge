@@ -1,1 +1,0 @@
-windows.system.power.2.h

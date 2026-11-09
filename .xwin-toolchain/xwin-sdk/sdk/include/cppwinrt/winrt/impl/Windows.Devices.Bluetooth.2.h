@@ -1,1 +1,0 @@
-windows.devices.bluetooth.2.h

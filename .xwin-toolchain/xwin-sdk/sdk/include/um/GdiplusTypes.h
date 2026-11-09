@@ -1,1 +1,0 @@
-gdiplustypes.h

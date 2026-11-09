@@ -1,1 +1,0 @@
-windows.devices.i2c.provider.0.h

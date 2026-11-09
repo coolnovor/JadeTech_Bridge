@@ -1,1 +1,0 @@
-gdiplusenums.h

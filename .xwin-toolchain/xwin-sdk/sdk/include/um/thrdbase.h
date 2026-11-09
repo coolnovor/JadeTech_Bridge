@@ -1,1 +1,0 @@
-ThrdBase.h

@@ -1,1 +1,0 @@
-windows.storage.pickers.0.h

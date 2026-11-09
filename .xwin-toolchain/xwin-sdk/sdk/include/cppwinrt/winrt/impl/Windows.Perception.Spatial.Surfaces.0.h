@@ -1,1 +1,0 @@
-windows.perception.spatial.surfaces.0.h
