@@ -10,7 +10,7 @@
 #include <GWCA/Managers/ChatMgr.h>
 #include <GWCA/Managers/GameThreadMgr.h>
 
-#include "../include/JadeLogger.h"
+#include "JadeTech/Core/JadeLogger.h"
 
 namespace JadeLogger {
 namespace {

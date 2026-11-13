@@ -1,15 +1,14 @@
-#include "JadeTech/Features/ChatCleaner.h"
-
+#include <Windows.h>
 #include <atomic>
 #include <cstdint>
 
 #include <GWCA/Managers/ChatMgr.h>
 #include <GWCA/Managers/GameThreadMgr.h>
 #include <GWCA/Managers/UIMgr.h>
-#include <GWCA/Constants/UIMessages.h>
 #include <GWCA/Utilities/Scanner.h>
 
-#include "../../include/JadeLogger.h"
+#include "JadeTech/Features/ChatCleaner.h"
+#include "JadeTech/Core/JadeLogger.h"
 
 namespace JadeTech::Features::ChatCleaner
 {

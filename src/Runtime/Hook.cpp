@@ -1,5 +1,5 @@
 #include <windows.h>
-#include "../include/JadeTech/HookState.h"
+#include "JadeTech/Runtime/HookState.h"
 
 namespace JadeHook {
 BridgeRuntime& GetRuntime() { static BridgeRuntime runtime; return runtime; }

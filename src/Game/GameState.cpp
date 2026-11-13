@@ -6,9 +6,9 @@
 #include <GWCA/Managers/GameThreadMgr.h>
 #include <GWCA/Managers/MapMgr.h>
 
-#include "../include/JadeTech/Features/CharacterSelect.h"
-#include "../include/JadeTech/Game/GameState.h"
-#include "../include/JadeLogger.h"
+#include "JadeTech/Features/CharacterSelect.h"
+#include "JadeTech/Game/GameState.h"
+#include "JadeTech/Core/JadeLogger.h"
 
 namespace JadeHook {
 
@@ -238,7 +238,6 @@ void UpdateGameState(SharedMemoryData* shared, RuntimeState* state) {
         if (!state->welcomed && now - state->mapLoadedTime >= kWelcomeDelayMs) {
             state->welcomed = true;
             JadeLogger::Info(L"欢迎使用 JadeTech 翠玉科技！", true);
-            JadeLogger::Info(L"测试聊天内容！", false);
         }
     } else {
         // 从已加载地图转为未加载

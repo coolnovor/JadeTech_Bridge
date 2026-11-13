@@ -24,12 +24,12 @@ endforeach()
 add_library(JadeTech_Bridge SHARED
   JadeTech_Bridge.def
   src/dllmain.cpp
-  src/Hook.cpp
+  src/Runtime/Hook.cpp
   src/Features/CharacterSelect.cpp
   src/Game/GameState.cpp
   src/IPC/SharedMemory.cpp
-  src/ChatManager.cpp
-  src/JadeLogger.cpp
+  src/Game/ChatManager.cpp
+  src/Core/JadeLogger.cpp
   src/Features/ChatCleaner.cpp
 )
 

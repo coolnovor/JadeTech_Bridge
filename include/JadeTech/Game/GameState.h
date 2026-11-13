@@ -1,6 +1,6 @@
 #pragma once
-#include "HookState.h"
-#include "../SharedMemory.h"
+#include "JadeTech/Runtime/HookState.h"
+#include "JadeTech/IPC/SharedMemory.h"
 namespace JadeHook {
 void UpdateGameState(SharedMemoryData* shared, RuntimeState* state);
 }

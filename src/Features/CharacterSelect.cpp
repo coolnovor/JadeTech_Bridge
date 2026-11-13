@@ -7,8 +7,8 @@
 #include <GWCA/Managers/MerchantMgr.h>
 #include <GWCA/Managers/UIMgr.h>
 
-#include "../include/JadeTech/Features/CharacterSelect.h"
-#include "../include/JadeLogger.h"
+#include "JadeTech/Features/CharacterSelect.h"
+#include "JadeTech/Core/JadeLogger.h"
 
 namespace JadeHook {
 
