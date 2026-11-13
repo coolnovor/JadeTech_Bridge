@@ -1,50 +1,78 @@
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <functional>
 #include <string>
-
-// 引入 GWCA 的总头文件
-#include <GWCA/GWCA.h>
-// 引入我们重构的日志库
+#include "../include/JadeHook/HookState.h"
+#include "../include/JadeHook/SharedMemory.h"
 #include "../include/JadeLogger.h"
+#include <GWCA/GWCA.h>
 
-DWORD WINAPI SharedMemoryThread(LPVOID lpParam);
+namespace {
+DWORD WINAPI WorkerMain(LPVOID) {
+    auto& rt = JadeHook::GetRuntime();
+    JadeLogger::Init(rt.module);
+    JadeLogger::LogFile("SYSTEM", "JadeTech_Bridge worker starting.");
 
-void LoadGWCADependency(HMODULE hModule) {
-    wchar_t dllPath[MAX_PATH];
-    GetModuleFileNameW(hModule, dllPath, MAX_PATH);
-    wchar_t* lastSlash = wcsrchr(dllPath, L'\\');
-    if (lastSlash) *lastSlash = L'\0';
-    
-    std::wstring gwcaPath = std::wstring(dllPath) + L"\\gwca.dll";
-    HMODULE hGwca = LoadLibraryW(gwcaPath.c_str());
-    
-    if (!hGwca) {
-        MessageBoxW(NULL, L"找不到 gwca.dll,请确保它和本 DLL 在同目录！", L"错误", MB_ICONERROR);
+    wchar_t path[MAX_PATH]{};
+    if (!GetModuleFileNameW(rt.module, path, MAX_PATH)) {
+        JadeLogger::LogFile("ERROR", "Cannot resolve Bridge module path.");
+        rt.running.store(false); return 1;
     }
+    wchar_t* slash = wcsrchr(path, L'\\');
+    if (!slash) { rt.running.store(false); return 2; }
+    *(slash + 1) = L'\0';
+    std::wstring gwcaPath = std::wstring(path) + L"gwca.dll";
+    HMODULE gwca = LoadLibraryW(gwcaPath.c_str());
+    if (!gwca) {
+        JadeLogger::LogFile("ERROR", "LoadLibrary gwca.dll failed: " + std::to_string(GetLastError()));
+        rt.running.store(false); return 3;
+    }
+
+    if (!GW::Initialize()) {
+        JadeLogger::LogFile("ERROR", "GWCA::Initialize failed.");
+        FreeLibrary(gwca); rt.running.store(false); return 4;
+    }
+    JadeLogger::LogFile("SYSTEM", "GWCA initialized.");
+    const DWORD result = JadeHook::SharedMemoryThread(nullptr);
+    GW::DisableHooks();
+    GW::Terminate();
+    FreeLibrary(gwca);
+    rt.running.store(false);
+    JadeLogger::LogFile("SYSTEM", "JadeTech_Bridge worker stopped.");
+    return result;
+}
 }
 
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
-    if (ul_reason_for_call == DLL_PROCESS_ATTACH) {
-        DisableThreadLibraryCalls(hModule);
-        
-        LoadGWCADependency(hModule);
-
-        CreateThread(nullptr, 0, [](LPVOID) -> DWORD {
-            // 1. 初始化 JadeLogger (传入当前的 HMODULE)
-            JadeLogger::Init(GetModuleHandleW(L"JadeTech_Bridge.dll")); 
-            
-            // 2. 【核心】初始化 GWCA，让内部指针生效
-            JadeLogger::LogFile("SYSTEM", "正在初始化 GWCA...");
-            if (!GW::Initialize()) {
-                JadeLogger::LogFile("SYSTEM", "❌ GWCA 初始化失败！");
-                return 1;
-            }
-            JadeLogger::LogFile("SYSTEM", "✅ GWCA 初始化成功！");
-
-            // 3. 启动共享内存线程
-            SharedMemoryThread(nullptr);
-            return 0;
-        }, nullptr, 0, nullptr);
+// DllMain deliberately does not initialize GWCA or create threads under loader lock.
+BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
+    if (reason == DLL_PROCESS_ATTACH) {
+        JadeHook::GetRuntime().module = instance;
+        DisableThreadLibraryCalls(instance);
     }
+    return TRUE;
+}
+
+extern "C" __declspec(dllexport) BOOL __stdcall JadeTech_Initialize() {
+    auto& rt = JadeHook::GetRuntime();
+    bool expected = false;
+    if (!rt.running.compare_exchange_strong(expected, true)) return TRUE;
+    rt.stopEvent = CreateEventW(nullptr, TRUE, FALSE, nullptr);
+    rt.worker = CreateThread(nullptr, 0, WorkerMain, nullptr, 0, nullptr);
+    if (!rt.worker) {
+        rt.running.store(false);
+        if (rt.stopEvent) { CloseHandle(rt.stopEvent); rt.stopEvent = nullptr; }
+        return FALSE;
+    }
+    return TRUE;
+}
+
+extern "C" __declspec(dllexport) BOOL __stdcall JadeTech_Shutdown(DWORD timeoutMs) {
+    auto& rt = JadeHook::GetRuntime();
+    rt.running.store(false);
+    if (rt.worker) {
+        const DWORD wait = WaitForSingleObject(rt.worker, timeoutMs);
+        if (wait != WAIT_OBJECT_0) return FALSE;
+        CloseHandle(rt.worker); rt.worker = nullptr;
+    }
+    if (rt.stopEvent) { CloseHandle(rt.stopEvent); rt.stopEvent = nullptr; }
     return TRUE;
 }

@@ -1,98 +1,60 @@
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <functional>
 #include <fstream>
 #include <mutex>
 #include <chrono>
 #include <iomanip>
 #include <sstream>
-
+#include <string>
 #include <GWCA/Managers/ChatMgr.h>
 #include <GWCA/Managers/GameThreadMgr.h>
 #include "../include/JadeLogger.h"
 
 namespace JadeLogger {
-    constexpr auto JADE_CHAN = GW::Chat::Channel::CHANNEL_GWCA2;
-    constexpr auto JADE_SENDER = L"JadeTech";
-    constexpr auto JADE_INFO_COL = 0xFFFFFF;    // 白色
-    constexpr auto JADE_WARNING_COL = 0xFFFF44; // 黄色
-    constexpr auto JADE_ERROR_COL = 0xFF4444;   // 红色
-
-    std::wstring g_logPath;
-    std::mutex g_logMutex;
-
-    // 辅助：将 wstring 转为 string (UTF-8)
-    std::string WStringToString(const std::wstring& wstr) {
-        if (wstr.empty()) return "";
-        int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), (int)wstr.size(), NULL, 0, NULL, NULL);
-        std::string strTo(size_needed, 0);
-        WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), (int)wstr.size(), &strTo[0], size_needed, NULL, NULL);
-        return strTo;
-    }
-
-    // 获取当前时间字符串
-    std::string GetTimestamp() {
-        auto now = std::chrono::system_clock::now();
-        auto in_time_t = std::chrono::system_clock::to_time_t(now);
-        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
-
-        struct tm timeinfo;
-        localtime_s(&timeinfo, &in_time_t);
-
-        std::stringstream ss;
-        ss << std::put_time(&timeinfo, "%H:%M:%S") << "." << std::setfill('0') << std::setw(3) << ms.count();
-        return ss.str();
-    }
-
-    void Init(HMODULE hModule) {
-        wchar_t dllPath[MAX_PATH];
-        GetModuleFileNameW(hModule, dllPath, MAX_PATH);
-        wchar_t* lastSlash = wcsrchr(dllPath, L'\\');
-        if (lastSlash) *lastSlash = L'\0';
-        g_logPath = std::wstring(dllPath) + L"\\JadeTech.log";
-
-        // 设置消息发送者及聊天框颜色
-        GW::Chat::SetSenderColor(JADE_CHAN, 0xFFFFA500);
-        GW::Chat::SetMessageColor(JADE_CHAN, 0xFFFFFFFF);
-
-        LogFile("SYSTEM", "JadeLogger 初始化完成，日志路径: " + WStringToString(g_logPath));
-    }
-
-    void LogFile(const std::string& tag, const std::string& message) {
-        std::lock_guard<std::mutex> lock(g_logMutex);
-        std::ofstream log(g_logPath, std::ios::app);
-        if (log.is_open()) {
-            log << "[" << GetTimestamp() << "] [" << tag << "] " << message << std::endl;
-        }
-    }
-
-    void LogFileW(const std::string& tag, const std::wstring& message) {
-        LogFile(tag, WStringToString(message));
-    }
-
-    static void SendToChat(uint32_t color, const std::wstring& message, bool transient) {
-        wchar_t colorBuf[16];
-        swprintf_s(colorBuf, L"<c=#%06X>", color);
-        
-        std::wstring formattedMsg = colorBuf + message + L"</c>";
-        std::wstring msgCopy = formattedMsg;
-        
-        GW::GameThread::Enqueue([msgCopy, transient]() {
-            GW::Chat::WriteChat(JADE_CHAN, msgCopy.c_str(), JADE_SENDER, transient);
-        });
-    }
-
-    void Info(const std::wstring& message, bool transient) {
-        SendToChat(JADE_INFO_COL, message, transient);
-        LogFileW("INFO", message);
-    }
-
-    void Warning(const std::wstring& message, bool transient) {
-        SendToChat(JADE_WARNING_COL, message, transient);
-        LogFileW("WARN", message);
-    }
-
-    void Error(const std::wstring& message, bool transient) {
-        SendToChat(JADE_ERROR_COL, message, transient);
-        LogFileW("ERROR", message);
-    }
+namespace {
+std::wstring g_logPath;
+std::mutex g_mutex;
+std::string ToUtf8(const std::wstring& value) {
+    if (value.empty()) return {};
+    const int n = WideCharToMultiByte(CP_UTF8, 0, value.data(), static_cast<int>(value.size()), nullptr, 0, nullptr, nullptr);
+    if (n <= 0) return {};
+    std::string out(static_cast<size_t>(n), '\0');
+    WideCharToMultiByte(CP_UTF8, 0, value.data(), static_cast<int>(value.size()), out.data(), n, nullptr, nullptr);
+    return out;
+}
+std::string Timestamp() {
+    const auto now = std::chrono::system_clock::now();
+    const auto tt = std::chrono::system_clock::to_time_t(now);
+    const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count() % 1000;
+    tm local{}; localtime_s(&local, &tt);
+    std::ostringstream s; s << std::put_time(&local, "%Y-%m-%d %H:%M:%S") << '.' << std::setw(3) << std::setfill('0') << ms;
+    return s.str();
+}
+void SendChat(uint32_t color, const std::wstring& message, bool transient) {
+    std::wstring formatted = L"<c=#";
+    wchar_t colorText[7]{}; swprintf_s(colorText, L"%06X", color & 0xFFFFFF);
+    formatted += colorText; formatted += L">"; formatted += message; formatted += L"</c>";
+    GW::GameThread::Enqueue([formatted, transient]() {
+        GW::Chat::WriteChat(GW::Chat::Channel::CHANNEL_GWCA2, formatted.c_str(), L"JadeTech", transient);
+    }, true);
+}
+}
+void Init(HMODULE module) {
+    wchar_t path[MAX_PATH]{};
+    if (!module || !GetModuleFileNameW(module, path, MAX_PATH)) return;
+    wchar_t* slash = wcsrchr(path, L'\\');
+    if (slash) *(slash + 1) = L'\0';
+    g_logPath = std::wstring(path) + L"JadeTech.log";
+    LogFile("SYSTEM", "Logger initialized.");
+}
+void LogFile(const std::string& tag, const std::string& message) {
+    std::lock_guard<std::mutex> lock(g_mutex);
+    if (g_logPath.empty()) return;
+    std::ofstream file(g_logPath, std::ios::binary | std::ios::app);
+    if (file) file << '[' << Timestamp() << "] [" << tag << "] " << message << "\r\n";
+}
+void LogFileW(const std::string& tag, const std::wstring& message) { LogFile(tag, ToUtf8(message)); }
+void Info(const std::wstring& message, bool transient) { LogFileW("INFO", message); SendChat(0xFFFFFF, message, transient); }
+void Warning(const std::wstring& message, bool transient) { LogFileW("WARN", message); SendChat(0xFFFF44, message, transient); }
+void Error(const std::wstring& message, bool transient) { LogFileW("ERROR", message); SendChat(0xFF4444, message, transient); }
 }

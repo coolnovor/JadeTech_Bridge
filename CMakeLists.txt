@@ -1,45 +1,65 @@
-cmake_minimum_required(VERSION 3.20)
-project(JadeTech_Bridge CXX)
+cmake_minimum_required(VERSION 3.24)
+project(JadeTech_Bridge VERSION 0.1.0 LANGUAGES CXX)
+
+if(NOT WIN32)
+  message(FATAL_ERROR "JadeTech_Bridge must be cross-compiled for Windows.")
+endif()
+if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
+  message(FATAL_ERROR "GWCA is x86-only. Configure with an i686/Win32 toolchain.")
+endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-# 指定生成 32 位 Windows DLL
-set(CMAKE_SYSTEM_NAME Windows)
-set(CMAKE_SYSTEM_PROCESSOR x86)
+set(GWCA_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/GWCA")
+set(GWCA_IMPLIB "${GWCA_ROOT}/lib/gwca.lib")
+set(GWCA_DLL "${GWCA_ROOT}/bin/gwca.dll")
+foreach(f "${GWCA_IMPLIB}" "${GWCA_DLL}")
+  if(NOT EXISTS "${f}")
+    message(FATAL_ERROR "Missing GWCA dependency: ${f}")
+  endif()
+endforeach()
 
-# 包含目录
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/GWCA/include
+add_library(JadeTech_Bridge SHARED
+  src/dllmain.cpp
+  src/Hook.cpp
+  src/CharacterSelect.cpp
+  src/GameState.cpp
+  src/SharedMemory.cpp
+  src/ChatManager.cpp
+  src/JadeLogger.cpp
 )
 
-# 链接目录 (指向你拷贝过来的 gwca.lib 所在位置)
-link_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/GWCA/lib
+target_include_directories(JadeTech_Bridge PRIVATE
+  "${CMAKE_CURRENT_SOURCE_DIR}/include"
+  "${GWCA_ROOT}/include"
 )
-
-# 包含所有的源码
-set(SOURCES
-    src/dllmain.cpp
-    src/ChatManager.cpp
-    src/Hook.cpp
-    src/JadeLogger.cpp    # <--- 日志输出
+target_compile_definitions(JadeTech_Bridge PRIVATE
+  WIN32_LEAN_AND_MEAN NOMINMAX GWCA_IMPORT
+  UNICODE _UNICODE
 )
-
-# 生成动态链接库
-add_library(JadeTech_Bridge SHARED ${SOURCES})
-
-# 链接 Windows 库和 GWCA
+target_compile_options(JadeTech_Bridge PRIVATE /W4 /permissive- /EHsc)
+target_link_directories(JadeTech_Bridge PRIVATE "${GWCA_ROOT}/lib")
 target_link_libraries(JadeTech_Bridge PRIVATE
     gwca
+    delayimp
     user32
     kernel32
-    psapi
-    delayimp  # <--- 延迟加载 gwca.dll
+)
+target_link_options(JadeTech_Bridge PRIVATE
+    "/DELAYLOAD:gwca.dll"
 )
 
-# 链接器延迟加载
-target_link_options(JadeTech_Bridge PRIVATE 
-    /DELAYLOAD:gwca.dll
+# gwca.dll is loaded explicitly from the Bridge directory by JadeTech_Initialize.
+# Do not use /DELAYLOAD: the explicit load gives deterministic dependency errors.
+set_target_properties(JadeTech_Bridge PROPERTIES
+  OUTPUT_NAME "JadeTech_Bridge"
+  PREFIX ""
+  SUFFIX ".dll"
+)
+
+add_custom_command(TARGET JadeTech_Bridge POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different "${GWCA_DLL}" "$<TARGET_FILE_DIR:JadeTech_Bridge>/gwca.dll"
+  COMMENT "Copying gwca.dll beside JadeTech_Bridge.dll"
 )
