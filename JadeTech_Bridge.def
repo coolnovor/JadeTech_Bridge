@@ -1,0 +1,5 @@
+LIBRARY JadeTech_Bridge
+
+EXPORTS
+    JadeTech_Initialize=_JadeTech_Initialize@0
+    JadeTech_Shutdown=_JadeTech_Shutdown@4

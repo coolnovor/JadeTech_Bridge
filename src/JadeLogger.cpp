@@ -6,8 +6,10 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
+
 #include <GWCA/Managers/ChatMgr.h>
 #include <GWCA/Managers/GameThreadMgr.h>
+
 #include "../include/JadeLogger.h"
 
 namespace JadeLogger {
@@ -41,9 +43,11 @@ void SendChat(uint32_t color, const std::wstring& message, bool transient) {
 }
 void Init(HMODULE module) {
     wchar_t path[MAX_PATH]{};
-    if (!module || !GetModuleFileNameW(module, path, MAX_PATH)) return;
+    if (!module || !GetModuleFileNameW(module, path, MAX_PATH))
+        return;
     wchar_t* slash = wcsrchr(path, L'\\');
-    if (slash) *(slash + 1) = L'\0';
+    if (slash)
+        *(slash + 1) = L'\0';
     g_logPath = std::wstring(path) + L"JadeTech.log";
     LogFile("SYSTEM", "Logger initialized.");
 }
@@ -54,7 +58,7 @@ void LogFile(const std::string& tag, const std::string& message) {
     if (file) file << '[' << Timestamp() << "] [" << tag << "] " << message << "\r\n";
 }
 void LogFileW(const std::string& tag, const std::wstring& message) { LogFile(tag, ToUtf8(message)); }
-void Info(const std::wstring& message, bool transient) { LogFileW("INFO", message); SendChat(0xFFFFFF, message, transient); }
-void Warning(const std::wstring& message, bool transient) { LogFileW("WARN", message); SendChat(0xFFFF44, message, transient); }
-void Error(const std::wstring& message, bool transient) { LogFileW("ERROR", message); SendChat(0xFF4444, message, transient); }
+void Info(const std::wstring& message, bool transient) {LogFileW("INFO", message);SendChat(0xFFD3D3D3, message, transient);}
+void Warning(const std::wstring& message, bool transient) { LogFileW("WARN", message); SendChat(0xFFFFFF44, message, transient); }
+void Error(const std::wstring& message, bool transient) { LogFileW("ERROR", message); SendChat(0xFFFF4444, message, transient); }
 }

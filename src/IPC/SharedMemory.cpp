@@ -3,10 +3,10 @@
 #include <string>
 #include <algorithm>
 #include <GWCA/Managers/GameThreadMgr.h>
-#include "../include/JadeHook/HookState.h"
-#include "../include/JadeHook/GameState.h"
-#include "../include/JadeHook/SharedMemory.h"
-#include "../include/JadeLogger.h"
+#include "../include/JadeTech/HookState.h"
+#include "../include/JadeTech/GameState.h"
+#include "../include/JadeTech/SharedMemory.h"
+#include "../include/JadeTech/Logger.h"
 
 namespace JadeHook {
 DWORD WINAPI SharedMemoryThread(LPVOID) {

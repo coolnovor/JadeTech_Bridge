@@ -22,13 +22,15 @@ foreach(f "${GWCA_IMPLIB}" "${GWCA_DLL}")
 endforeach()
 
 add_library(JadeTech_Bridge SHARED
+  JadeTech_Bridge.def
   src/dllmain.cpp
   src/Hook.cpp
-  src/CharacterSelect.cpp
-  src/GameState.cpp
-  src/SharedMemory.cpp
+  src/Features/CharacterSelect.cpp
+  src/Game/GameState.cpp
+  src/IPC/SharedMemory.cpp
   src/ChatManager.cpp
   src/JadeLogger.cpp
+  src/Features/ChatCleaner.cpp
 )
 
 target_include_directories(JadeTech_Bridge PRIVATE
