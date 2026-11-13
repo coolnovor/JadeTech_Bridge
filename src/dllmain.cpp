@@ -111,8 +111,7 @@ DWORD WINAPI WorkerMain(LPVOID) {
 
         GW::GameThread::Enqueue(
             []() {
-                GW::Chat::SetSenderColor(GW::Chat::Channel::CHANNEL_GWCA2,
-                                         0xFFCFFF64);
+                GW::Chat::SetSenderColor(GW::Chat::Channel::CHANNEL_GWCA2, 0xFFCFFF64);
             },
             true);
 
@@ -128,15 +127,18 @@ DWORD WINAPI WorkerMain(LPVOID) {
 
         // 聊天记录清理模块
         // 初始化失败不影响其他功能。
-        chatCleanerInitialized = true;
+        // ChatCleaner 暂时禁用。
+        // 当前客户端未能匹配 InitChatLog 特征码，
+        // 待重新验证游戏内部函数地址后再启用。
+        // chatCleanerInitialized = true;
 
-        if (!JadeTech::Features::ChatCleaner::Initialize()) {
-            JadeLogger::LogFile("WARNING",
-                                "ChatCleaner 初始化失败，"
-                                "已禁用地图切换聊天清理功能。");
-        } else {
-            JadeLogger::LogFile("SYSTEM", "ChatCleaner 初始化成功。");
-        }
+        // if (!JadeTech::Features::ChatCleaner::Initialize()) {
+        //     JadeLogger::LogFile("WARNING",
+        //                         "ChatCleaner 初始化失败，"
+        //                         "已禁用地图切换聊天清理功能。");
+        // } else {
+        //     JadeLogger::LogFile("SYSTEM", "ChatCleaner 初始化成功。");
+        // }
 
         // ----------------------------------------------------
         // 启动共享内存主循环
@@ -159,11 +161,11 @@ DWORD WINAPI WorkerMain(LPVOID) {
     // 必须在 GW::Terminate() 之前执行。
     // --------------------------------------------------------
 
-    if (chatCleanerInitialized) {
-        JadeTech::Features::ChatCleaner::Terminate();
+    // if (chatCleanerInitialized) {
+    //     JadeTech::Features::ChatCleaner::Terminate();
 
-        JadeLogger::LogFile("SYSTEM", "ChatCleaner 已停止。");
-    }
+    //     JadeLogger::LogFile("SYSTEM", "ChatCleaner 已停止。");
+    // }
 
     // --------------------------------------------------------
     // 关闭 GWCA
